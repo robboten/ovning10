@@ -10,13 +10,13 @@ searchInputElement.addEventListener("keyup", e => {
     timeout = setTimeout(function () {
         console.log(e);
         searchHandler();
-    }, 1000);
+    }, 500);
 
 });
 
 async function fetchData(url) {
     try {
-        const res = await fetch(url, { method: 'GET', headers: { 'Access-Control-Allow-Origin': '*' } });
+        const res = await fetch(url, { method: 'GET', headers: { } });
         const data = await res.json();
         return data;
     } catch (error) {

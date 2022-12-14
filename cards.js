@@ -1,11 +1,24 @@
+
+let deckId = 'new';
+
+//faster than innerHtml
+const reset = () => {
+    cardArea.textContent = '' ;
+    deckText.innerText='';
+    deckId='new';
+};
+
 const cardArea = document.getElementById("cardArea");
-const searchBtnElement = document.getElementById("searchBtn");
+const drawBtnElement = document.getElementById("drawBtn");
+const resetBtnElement = document.getElementById("resetBtn");
+const deckText = document.getElementById("decktext");
 
-searchBtnElement.addEventListener("click", searchHandler);
+drawBtnElement.addEventListener("click", cardHandler);
+resetBtnElement.addEventListener("click", reset);
 
-async function fetchData(url) {
+async function fetchJSON(url) {
     try {
-        const res = await fetch(url, { method: 'GET', headers: { 'Access-Control-Allow-Origin': '*' } });
+        const res = await fetch(url);
         const data = await res.json();
         return data;
     } catch (error) {
@@ -13,35 +26,68 @@ async function fetchData(url) {
     }
 }
 
-function searchHandler() {
-        const nrCards=1;
-        cardArea.innerHTML = '';
-        fetchData(`https://deckofcardsapi.com/api/deck/new/draw/?count=${nrCards}`)
-            .then(data => {
-                console.log(data)
-                data.result && data.result.length > 0 ? searchOutput(data.cards) : console.log("nothing found");
-            })
-            .catch(err => console.error(err));
+async function newDeck() {
+    const data = await fetchJSON(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`)
+    console.log(data.deck_id)
+    return data && data.deck_id ? data.deck_id : 'new';
+};
+
+async function getCard(deckId) {
+    const nrCards = 1;
+    const data = await fetchJSON(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${nrCards}`);
+    return data;
 }
 
-let searchOutput = (arr) => {
-    arr.forEach(e => {
-        console.log(e)
+async function cardHandler() {
+    try {
+        if (deckId === 'new') {
+            deckId = await newDeck();
+            //newDeck = function () { };
+        }
+        const data = await getCard(deckId);
+
+        if(data && data.cards.length > 0){
+            deckText.innerText=`${data.remaining} cards remaining`;
+            return searchOutput(data.cards);
+        }
+        console.log("nothing found");
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const searchOutput = (arr) => {
+    arr.map(e => {
         createCards(e)
     });
 }
 
-let createCards = (data) => {
-    let card = document.createElement('div');
-    card.className = 'card shadow mb-3';
+async function resize(e){
+    console.log(e.id);
+    const cardId=e.id;
+    const deck=await fetchJSON(`https://deckofcardsapi.com/api/deck/${deckId}/return/?cards=${cardId}`)
+    //const pile=await fetchJSON(`https://deckofcardsapi.com/api/deck/${deckId}/pile/scrap/add/?cards=${cardId}`)
+    e.classList.toggle("hide");
+    deckText.innerText=`${deck.remaining} cards remaining`;
+    console.log(deck);
+}
+
+const createCards = (data) => {
+    let cardContainer = document.createElement('div');
+    cardContainer.className = 'card-container';
 
     let cardImg = document.createElement('img');
     cardImg.src = `${data.image}`;
-    cardImg.className = 'card-img-top';
-    cardImg.alt = data.properties.name;
+    cardImg.alt = data.code;
+    cardImg.className = 'card-image shadow';
+    cardImg.id = data.code;
+    cardImg.onclick = function() { resize(this); };
 
-    card.appendChild(cardImg);
-    cardArea.appendChild(card);
+    //cardArea.appendChild(cardContainer);
+    cardArea.appendChild(cardImg);
+
+    //cardArea.appendChild(cardContainer);
+    //cardContainer.appendChild(cardImg);
 }
 
 

@@ -6,6 +6,12 @@
   --bs-body-bg: var(--bs-gray-100);
 }
 
+.header-wrapper{
+  background-image: url('https://81f2fc6b5238972cb92a-395fccf71f85d2309bd8bf244c06b9bc.ssl.cf5.rackcdn.com/p/6be8e06d-3806-445c-ad5b-494ce38c3237.jpg');
+  background-position: 25%;
+}
+
+
 .hide {
   display: none;
 }
@@ -14,6 +20,37 @@
   font-weight: bold;
 }
 
-.card-body{
+.card-body {
   text-transform: capitalize;
+}
+
+.cardtable {
+  background-image: url('https://www.publicdomainpictures.net/pictures/400000/velka/image-1624296481ePM.jpg');
+  background-size: 50%;
+  padding: 4rem 15rem 4rem 4rem;
+  min-height: 540px;
+  border-radius: 40px;
+  border: 10px solid brown;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.deckback{
+  --card-width: 200px;
+  width: var(--card-width);
+  height: calc(var(--card-width) * 1.5);
+}  
+
+.deck-text{
+  min-height: 24px;
+}
+
+.card-image {
+  --card-width: 200px;
+
+  margin-right: calc(26px - var(--card-width));
+  float: left;
+
+  width: var(--card-width);
+  height: calc(var(--card-width) * 1.5);
 }
