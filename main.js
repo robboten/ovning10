@@ -3,6 +3,17 @@ const searchBtnElement = document.getElementById("searchBtn");
 const searchInputElement = document.getElementById("searchInput");
 searchBtnElement.addEventListener("click", searchHandler);
 
+let timeout = null;
+
+searchInputElement.addEventListener("keyup", e => {
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+        console.log(e);
+        searchHandler();
+    }, 1000);
+
+});
+
 async function fetchData(url) {
     try {
         const res = await fetch(url, { method: 'GET', headers: { 'Access-Control-Allow-Origin': '*' } });
