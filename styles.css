@@ -1,0 +1,19 @@
+/*
+ * Custom CSS
+ */
+
+:root {
+  --bs-body-bg: var(--bs-gray-100);
+}
+
+.hide {
+  display: none;
+}
+
+.propkey {
+  font-weight: bold;
+}
+
+.card-body{
+  text-transform: capitalize;
+}
