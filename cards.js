@@ -28,7 +28,6 @@ async function fetchJSON(url) {
 
 async function newDeck() {
     const data = await fetchJSON(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`)
-    console.log(data.deck_id)
     return data && data.deck_id ? data.deck_id : 'new';
 };
 
@@ -63,19 +62,14 @@ const searchOutput = (arr) => {
 }
 
 async function resize(e){
-    console.log(e.id);
     const cardId=e.id;
     const deck=await fetchJSON(`https://deckofcardsapi.com/api/deck/${deckId}/return/?cards=${cardId}`)
     //const pile=await fetchJSON(`https://deckofcardsapi.com/api/deck/${deckId}/pile/scrap/add/?cards=${cardId}`)
     e.classList.toggle("hide");
     deckText.innerText=`${deck.remaining} cards remaining`;
-    console.log(deck);
 }
 
 const createCards = (data) => {
-    let cardContainer = document.createElement('div');
-    cardContainer.className = 'card-container';
-
     let cardImg = document.createElement('img');
     cardImg.src = `${data.image}`;
     cardImg.alt = data.code;
@@ -83,11 +77,7 @@ const createCards = (data) => {
     cardImg.id = data.code;
     cardImg.onclick = function() { resize(this); };
 
-    //cardArea.appendChild(cardContainer);
     cardArea.appendChild(cardImg);
-
-    //cardArea.appendChild(cardContainer);
-    //cardContainer.appendChild(cardImg);
 }
 
 

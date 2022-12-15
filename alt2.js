@@ -5,10 +5,8 @@ let chars = [];
 
 searchInputElement.addEventListener("input", e => {
     const value = e.target.value.toLowerCase();
-    console.log(value)
     chars.forEach(char => {
         const isVisible = char.name.toLowerCase().includes(value)
-        console.log(isVisible)
         char.element.classList.toggle("hide", !isVisible)
     })
 });

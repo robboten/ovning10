@@ -8,7 +8,6 @@ let timeout = null;
 searchInputElement.addEventListener("keyup", e => {
     clearTimeout(timeout);
     timeout = setTimeout(function () {
-        console.log(e);
         searchHandler();
     }, 500);
 
@@ -30,7 +29,6 @@ function searchHandler() {
         cardArea.innerHTML = '';
         fetchData(`https://www.swapi.tech/api/people/?name=${name}`)
             .then(data => {
-                console.log(data)
                 data.result && data.result.length > 0 ? searchOutput(data.result) : console.log("nothing found");
             })
             .catch(err => console.error(err));
@@ -39,7 +37,6 @@ function searchHandler() {
 
 let searchOutput = (arr) => {
     arr.forEach(e => {
-        console.log(e)
         createCards(e)
     });
 }
@@ -70,7 +67,6 @@ let createCards = (data) => {
 
     for (var key in result) {
         keyStr=key;
-        console.log(keyStr);
         cardText.innerHTML += `<span class="propkey">${keyStr.replaceAll('_',' ')}</span>: ${props[key]}<br />`;
     }
 
